@@ -16,7 +16,12 @@
     overflow-x: hidden;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: 'Outfit', system-ui, sans-serif;
   }
 
@@ -99,8 +104,8 @@
     @apply relative;
   }
 
-  .floating-label-group input:focus + label,
-  .floating-label-group input:not(:placeholder-shown) + label {
+  .floating-label-group input:focus+label,
+  .floating-label-group input:not(:placeholder-shown)+label {
     @apply -translate-y-7 text-xs text-primary-400;
   }
 
@@ -127,9 +132,17 @@
 }
 
 @keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 /* Leaf floating animation */
