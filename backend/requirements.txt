@@ -5,6 +5,7 @@ pymysql
 alembic
 python-jose[cryptography]
 passlib[bcrypt]
+bcrypt==4.0.1
 python-multipart
 scikit-learn
 opencv-python
