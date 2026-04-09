@@ -4,8 +4,8 @@ sqlalchemy
 pymysql
 alembic
 python-jose[cryptography]
-passlib[bcrypt]
-bcrypt==4.0.1
+passlib
+bcrypt==4.2.1
 python-multipart
 scikit-learn
 opencv-python
