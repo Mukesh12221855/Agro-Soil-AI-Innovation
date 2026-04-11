@@ -9,6 +9,7 @@ from fastapi.responses import JSONResponse
 from database import engine, Base, SessionLocal
 from routers import auth, soil, crop, market, marketplace, disease, profile
 from services.market_service import seed_market_prices, fetch_market_prices_from_gov, seed_marketplace_listings
+from prometheus_fastapi_instrumentator import Instrumentator
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -147,6 +148,7 @@ app = FastAPI(
     description="Intelligent Farming Platform for India",
     lifespan=lifespan,
 )
+Instrumentator().instrument(app).expose(app)
 
 app.add_middleware(
     CORSMiddleware,

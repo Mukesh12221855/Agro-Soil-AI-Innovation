@@ -1,0 +1,34 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: agro-alert-rules
+  namespace: monitoring
+data:
+  agro-rules.yml: |
+    groups:
+    - name: agro-ai-alerts
+      rules:
+      - alert: PodDown
+        expr: up{namespace="default"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Agro AI pod is down"
+          description: "Pod {{ $labels.pod }} is not responding"
+      - alert: HighCPUUsage
+        expr: sum(rate(container_cpu_usage_seconds_total{namespace="default"}[5m])) by (pod) > 0.8
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU usage in Agro AI"
+          description: "Pod {{ $labels.pod }} CPU above 80%"
+      - alert: HighMemoryUsage
+        expr: sum(container_memory_usage_bytes{namespace="default"}) by (pod) > 400000000
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High memory usage"
+          description: "Pod {{ $labels.pod }} memory above 400MB"

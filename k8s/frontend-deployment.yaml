@@ -1,0 +1,45 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agro-frontend
+  namespace: default
+  labels:
+    app: agro-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: agro-frontend
+  template:
+    metadata:
+      labels:
+        app: agro-frontend
+    spec:
+      containers:
+      - name: agro-frontend
+        image: mukesh2801/agro-frontend:latest
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "250m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: agro-frontend-service
+  namespace: default
+spec:
+  selector:
+    app: agro-frontend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+    nodePort: 30080
+  type: NodePort

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: agro-config
+  namespace: default
+data:
+  APP_ENV: "production"
+  DB_HOST: "172.31.39.94"
+  DB_PORT: "3306"
+  DB_NAME: "agrosoilai"
+  ALGORITHM: "HS256"
+  ACCESS_TOKEN_EXPIRE_MINUTES: "60"
+  REFRESH_TOKEN_EXPIRE_DAYS: "7"

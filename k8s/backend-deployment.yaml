@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agro-backend
+  namespace: default
+  labels:
+    app: agro-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: agro-backend
+  template:
+    metadata:
+      labels:
+        app: agro-backend
+    spec:
+      containers:
+      - name: agro-backend
+        image: mukesh2801/agro-backend:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: agro-secret
+              key: DB_USER
+        - name: DB_PASS
+          valueFrom:
+            secretKeyRef:
+              name: agro-secret
+              key: DB_PASS
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: agro-secret
+              key: SECRET_KEY
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: agro-config
+              key: DB_HOST
+        - name: DB_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: agro-config
+              key: DB_PORT
+        - name: DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: agro-config
+              key: DB_NAME
+        - name: ALGORITHM
+          valueFrom:
+            configMapKeyRef:
+              name: agro-config
+              key: ALGORITHM
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        readinessProbe:
+          httpGet:
+            path: /docs
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /docs
+            port: 8000
+          initialDelaySeconds: 60
+          periodSeconds: 15
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: agro-backend-service
+  namespace: default
+spec:
+  selector:
+    app: agro-backend
+  ports:
+  - protocol: TCP
+    port: 8000
+    targetPort: 8000
+  type: ClusterIP
